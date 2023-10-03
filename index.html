@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Chia Hui Yun">
+
+    <title>Table Output & Processing</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        td, th {
+            border: 2px solid blue;
+            text-align: center;
+            width: 150px;
+        }
+        tr:hover {
+            background-color: #D6EEEE;
+        }
+        h1 {
+            text-align: center;
+        }
+        .center {
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .caption {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .footer-top .container {
+            display: grid;
+        }
+        .footer-bottom {
+            background-color: #99EDC3;
+            font-size: 0.8rem;
+            text-align: center;
+            padding-block: 5px;
+        }
+        .copyright {
+            margin-block-end: 25px;
+        }
+        .copyright :is(.copyright-link, ion-icon) {
+            display: inline-block;
+            color: #A230ED;
+            text-decoration: none;
+            font-weight: 800;
+        }
+        .copyright ion-icon {
+            font-size: 18px;
+            margin-block-end: -4px;
+        }
+        .copyright-link:is(:hover, :focus) {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<!--------------------------------------- #BODY-------------------------------->
+
+<body style="background-color:rgb(208, 255, 240);">
+    <h1>Table Output & Processing</h1>
+    <!-- table 1 -->
+    <table class="center">
+
+    </table>
+    <div class="caption">
+        <caption>Table 1</caption>
+    </div>
+    
+    <!-- table 2 -->
+    <table class="center">
+        <thead>
+        <tr>
+            <th>Category</th>
+            <th>Value</th>
+        </tr>
+        </thead>
+        <tbody id="table2Body">
+        <tr>
+            <td>Alpha</td>
+                <td></td>
+        </tr>
+        <tr>
+            <td>Beta</td>
+                <td></td>
+        </tr>
+        <tr>
+            <td>Charlie</td>
+                <td></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="caption">
+        <caption>Table 2</caption>
+    </div>
+
+    <!--------------------------------------- #FOOTER-------------------------------->
+
+    <footer class="footer">
+
+        <div class="footer-bottom">
+            <div class="container">
+
+                <p class="copyright">
+                    &copy; 2023 Website Made With Netlify
+                    <ion-icon name="heart" aria-hidden="true"></ion-icon> by </br>
+                    <a href="mailto:chiahuiyun1999@gmail.com" class="copyright-link">Chia Hui Yun</a></br>
+                    Date: 29/04/2023
+                </p>
+            </div>
+        </div>
+
+    </footer>
+
+    <!--------------------------------------- #Javascript-------------------------------->
+
+    <script>
+        //fetch data from csv file 
+        onload = fetch("./Table_Input.csv").then(res => {
+            return res.text()
+        }).then(data => {
+            let result = data.split(/\r?\n|\r/).map(e => {
+                return e.split(",")
+            })
+
+            // display table 1
+            result.forEach(e => {
+                let m = e.map(e => {
+                    return `<td>${e}</td>`;
+                }).join("")
+                let ce = document.createElement("tr");
+                ce.innerHTML = m;
+                if (ce.innerText != "") {
+                    document.querySelector("table").appendChild(ce);
+                }
+
+                // console.log(m);
+
+            })
+            
+            // update for Table 2
+            let a5 = parseInt(result[5][1]);    //A5,2
+            let a7 = parseInt(result[7][1]);    //A7,5
+            let a12 = parseInt(result[12][1]);  //A12,3
+            let a13 = parseInt(result[13][1]);  //A13,90
+            let a15 = parseInt(result[15][1]);  //A15,80
+            let a20 = parseInt(result[20][1]);  //A20,28
+
+            let tbody = document.getElementById("table2Body");
+            tbody.children[0].children[1].innerText = `${a5} + ${a20} = ${a5 + a20}`;   //ans = 2 + 28 = 30
+            tbody.children[1].children[1].innerText = `${a15} / ${a7} = ${a15 / a7}`;   //ans = 80 / 5 = 16
+            tbody.children[2].children[1].innerText = `${a13} * ${a12} = ${a13 * a12}`; //ans = 90 * 3 = 270
+        })
+    </script>
+</body>
+</html>
